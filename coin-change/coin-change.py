@@ -1,5 +1,6 @@
 class Solution:
     def coinChange(self, coins: List[int], amount: int) -> int:
+        coins.sort()
         @cache
         def rec(i, s):
             if s == 0:
@@ -9,6 +10,8 @@ class Solution:
             ans = float('inf')
             if s>=coins[i]:
                 ans = min(ans, 1+ rec(i, s-coins[i]))
+            else:
+                return float('inf')
             ans = min(ans, rec(i+1, s))
             return ans
         c = rec(0, amount)
