@@ -1,24 +1,24 @@
 class MedianFinder:
 
     def __init__(self):
-        self.low = []
-        self.high = []
-        self.num = 0
-    def addNum(self, num):
-        heappush(self.high, num)
-        if len(self.low)+1<len(self.high):
-            c = -heappop(self.high)
-            heappush(self.low, c)
-        while self.low and self.high and -self.low[0]>self.high[0]:
-            c = -heappop(self.low)
-            d = -heappop(self.high)
-            heappush(self.low, d)
-            heappush(self.high, c)
-        self.num += 1
-        
+        self.mi = []
+        self.ma = []
+        self.n = 0
 
-    def findMedian(self):
-        if self.num & 1:
-            return self.high[0]
+    def addNum(self, num: int) -> None:
+        heappush(self.ma, num)
+        if len(self.ma)>len(self.mi)+1:
+            heappush(self.mi, -heappop(self.ma))
+            
+        while self.mi and -self.mi[0]>self.ma[0]:
+            c = heappop(self.mi)
+            d = heappop(self.ma)
+            heappush(self.ma, -c)
+            heappush(self.mi, -d)
+        self.n+=1
+            
+    def findMedian(self) -> float:
+        if self.n & 1:
+            return self.ma[0]
         else:
-            return (-self.low[0] + self.high[0])/2 
+            return (self.ma[0] -self.mi[0])/2
