@@ -1,16 +1,19 @@
 class Solution:
-    def maxArea(self, h: int, w: int, hori, vert):
-        hori = sorted(set(hori) | {h})
+    def maxArea(self, h: int, w: int, horizontalCuts: List[int], verticalCuts: List[int]) -> int:
+        horizontalCuts.sort()
+        verticalCuts.sort()
         prev = 0
+        m = 0
+        for i in horizontalCuts:
+            m = max(m, i-prev)
+            prev = i
+        m = max(m, h-prev)
+        prev = 0
+        
         ma = 0
-        for i in hori:
+        for i in verticalCuts:
             ma = max(ma, i-prev)
             prev = i
-        vert = sorted(set(vert) | {w})
-        prev = 0
-        ma1 = 0
-        for i in vert:
-            ma1 = max(ma1, i-prev)
-            prev = i
-        print(ma, ma1)
-        return (ma*ma1)%(10**9 + 7)
+        ma = max(ma, w-prev)
+        return (ma*m)%(10**9 + 7)
+               
