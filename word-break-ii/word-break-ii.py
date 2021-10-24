@@ -2,13 +2,14 @@ class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
         wordDict = set(wordDict)
         ans = []
-        def dfs(i, temp):
-            if i == len(s):
-                ans.append(' '.join(temp))
-            c = ''
-            for j in range(i, len(s)):
-                c+=s[j]
-                if c in wordDict:
-                    dfs(j+1, temp + [c])
-        dfs(0, [])
+        n = len(s)
+        def rec(i, path):
+            if i == n:
+                ans.append(path[:-1])
+            t = ''
+            for j in range(i, n):
+                t += s[j]
+                if t in wordDict:
+                    rec(j+1, path + t + ' ')
+        rec(0, '')
         return ans
