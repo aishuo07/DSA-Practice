@@ -1,14 +1,17 @@
 class Solution:
-    def trap(self, height: List[int]) -> int:
-        ma = 0
-        n = len(height)
-        left = []
-        for i in height:
-            ma = max(ma, i)
-            left.append(ma)
+    def trap(self, arr: List[int]) -> int:
         ans = 0
-        ma = 0
-        for i in range(len(height)-1, -1, -1):
-            ma = max(ma, height[i])
-            ans += max(0, min(ma, left[i]) - height[i])
+        l,  r = 0, len(arr)-1
+        maxl = 0
+        maxr = 0
+        while l<=r:
+            if maxl<maxr:
+                maxl = max(maxl, arr[l])
+                ans += maxl - arr[l]
+                l+=1
+            else:
+                maxr = max(maxr, arr[r])
+                ans += maxr - arr[r]
+                r-=1
         return ans
+                
