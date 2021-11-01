@@ -1,15 +1,19 @@
 class Solution:
     def countPalindromicSubsequence(self, s: str) -> int:
-        dic= {}
-        for j, i in enumerate(s):
-            if i not in dic:
-                dic[i] = [j, j]
-            else:
-                dic[i][1] = max(dic[i][1], j)
-        su = 0
-        for i in dic:
-            se =set()
-            for j in range(dic[i][0]+1, dic[i][1]):
-                se.add(s[j])
-            su += len(se)
-        return su
+        a = ord('a')
+        ans = 0
+        for i in range(0, 26):
+            c = chr(a + i)
+            start = -1
+            co = set()
+            cur = set()
+            end = 0
+            for i in range(len(s)):
+                if s[i] == c:
+                    if start == -1:
+                        start = i
+                    else:
+                        end = i
+                
+            ans += len(set(s[start+1:end]))
+        return ans
