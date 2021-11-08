@@ -8,22 +8,24 @@ class Node:
 """
 
 class Solution:
-    def copyRandomList(self, head: 'Node') -> 'Node':
+    def copyRandomList(self, head):
+        curr = head
         if not head:
-            return
-        curr = head
+            return 
         while curr:
-            new = Node(curr.val)
-            curr.next, new.next = new, curr.next
-            curr = curr.next.next
+            node = Node(curr.val)
+            next = curr.next
+            curr.next = node
+            node.next = next
+            curr = next
         curr = head
-        
         while curr:
             if curr.random:
                 curr.next.random = curr.random.next
             curr = curr.next.next
         curr = head.next
-        while curr.next:
-            curr.next = curr.next.next
-            curr = curr.next
+        while curr and curr.next:
+            next = curr.next.next
+            curr.next = next
+            curr = next
         return head.next
