@@ -1,50 +1,49 @@
 class Node:
-    def __init__(self, key, data):
-        self.key = key
+    
+    def __init__(self, data, key):
         self.data = data
+        self.key = key
+        self.next = None
         self.prev = None
-        self.next =  None
-
 
 class LRUCache:
 
-    def __init__(self, capacity):
-        self.has = {}
-        self.cap = capacity
-        self.root = Node(0, 0)
+    def __init__(self, capacity: int):
+        self.head = Node(0, 0)
         self.tail = Node(0, 0)
-        self.tail.prev = self.root
-        self.root.next = self.tail
-        
+        self.head.next = self.tail
+        self.tail.prev = self.head
+        self.hash = {}
+        self.cap = capacity
+
     def get(self, key):
-        if key in self.has:
-            val = self.has[key].data
-            self.remove(self.has[key])
-            self.has[key] = Node(key, val)
-            self.add(self.has[key])
-            return val
+        if key in self.hash:
+            value = self.hash[key].data
+            self.remove(key)  
+            self.add(key, value)
+            return self.hash[key].data
         return -1
-    
-    def put(self, key, value):
-        if key in self.has:
-            self.remove(self.has[key])
-            self.has[key] = Node(key, value)
-            self.add(self.has[key])
-        else:
-            self.has[key] = Node(key, value)
-            self.add(self.has[key])
-        if len(self.has) == self.cap+1:
-            self.has.pop(self.root.next.key)
-            self.remove(self.root.next)
-            
-    def add(self, node):
-        c = self.tail.prev
-        c.next = node
-        node.prev = c
-        node.next = self.tail
-        self.tail.prev = node
         
-    def remove(self, node):
-        node.prev.next = node.next
-        node.next.prev = node.prev
+    def put(self, key, value):
+        if key in self.hash:
+            self.remove(key)
+            self.add(key, value)
+        elif len(self.hash)<self.cap:
+            self.add(key,  value)
+        else:
+            self.remove(self.head.next.key)
+            self.add(key, value)
+        
+    def remove(self, key):
+        self.hash[key].prev.next = self.hash[key].next
+        self.hash[key].next.prev = self.hash[key].prev
+        self.hash.pop(key)
+    
+    def add(self, key, value):
+        self.hash[key] = Node(value, key)
+        temp = self.tail.prev
+        self.hash[key].prev = temp
+        self.hash[key].next = self.tail
+        self.tail.prev = self.hash[key]
+        temp.next = self.hash[key]
         
