@@ -1,16 +1,18 @@
 class Solution:
     def reorganizeString(self, s: str) -> str:
-        c = Counter(s)
-        h = [[-value, key] for key, value in c.items()]
-        heapify(h)
+        c  = Counter(s)
+        ma = max(c.values())
+        if ma>(len(s)+1)//2:
+            return ''
         res = ''
-        num, st = 0, ''
-        while h:
-            a, b = heappop(h)
-            res += b
-            if num<0:
-                heappush(h, [num, st])
-            a+=1
-            num, st = a, b
-        print(res, h)
-        return res if len(res) == len(s) else ''
+        arr = ['']*len(s)
+        j = 0
+        l = sorted([[i, j] for j, i in c.items()])
+        for i in l[::-1]:
+            for k in range(i[0]):
+                while j<len(s) and arr[j] != '':
+                    j+=1
+                arr[j] = i[1]
+                j = (j+2)%len(s)
+        return ''.join(arr)
+                
