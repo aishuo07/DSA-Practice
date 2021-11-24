@@ -1,20 +1,11 @@
 class Solution:
     def corpFlightBookings(self, bookings: List[List[int]], n: int) -> List[int]:
-        bookings.sort()
-        c = sorted(bookings, key = lambda x:x[1])
-        j = 0
-        k = 0
-        m = len(bookings)
-        arr = []
+        arr = [0]*(n+1)
+        for i in bookings:
+            arr[i[0]-1] += i[2]
+            arr[i[1]] -= i[2]
         s = 0
-        a= []
-        for i in range(1, n+1):
-            while k<m and i>=bookings[k][0]:
-                s+=bookings[k][2]
-                k+=1
-            while j<k and i>c[j][1]:
-                s-=c[j][2]
-                j+=1
-            arr.append(s)
-
-        return arr
+        for i in range(n):
+            s += arr[i]
+            arr[i] = s
+        return arr[:-1]
