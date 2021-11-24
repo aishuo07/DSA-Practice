@@ -8,7 +8,7 @@ class Solution:
             return s
         fast = slow = n
         fast = rec(n)
-        while fast != slow:
+        while fast != slow and fast!=1:
             slow = rec(slow)
             fast = rec(fast)
             fast = rec(fast)
