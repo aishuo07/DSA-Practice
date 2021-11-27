@@ -1,15 +1,16 @@
 class Solution:
     def numDecodings(self, s: str) -> int:
-        n = len(s)
         @cache
         def rec(i):
-            if i >= len(s):
+            if i>=len(s):
                 return 1
-            ans = 0
-            if s[i] == '0':
+            if s[i]=='0':
                 return 0
-            for j in range(i+1, min(len(s)+1, i+3)):
-                if s[i]!=0 and 0<int(s[i:j])<27:
-                    ans+= rec(j)
+            tmp = ''
+            ans = 0
+            for j in range(i, min(i+2, len(s))):
+                tmp += s[j]
+                if 0<int(tmp)<27:
+                    ans += rec(j+1)
             return ans
         return rec(0)
