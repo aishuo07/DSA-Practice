@@ -6,13 +6,13 @@
 #         self.right = right
 class Solution:
     def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
-        i = [0]
-        def rec(inorder):
-            if i[0]<len(preorder) and preorder[i[0]] in inorder:
-                root = TreeNode(preorder[i[0]])
-                ind = inorder.index(preorder[i[0]])
-                i[0] += 1
-                root.left = rec(inorder[:ind])
-                root.right = rec(inorder[ind+1:])
+        ind = [0]
+        dic = {i:j for j, i in enumerate(inorder)}
+        def rec(i, j):
+            if ind[0]<len(preorder) and i<=dic[preorder[ind[0]]]<=j:
+                root = TreeNode(preorder[ind[0]])
+                ind[0] += 1
+                root.left = rec(i, dic[root.val]-1)
+                root.right = rec(dic[root.val] + 1, j)
                 return root
-        return rec(inorder)
+        return rec(0, len(inorder)-1)
